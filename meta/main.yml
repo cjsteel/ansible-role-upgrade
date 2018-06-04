@@ -1,0 +1,29 @@
+--- #roles/upgrade/meta/main.yml
+
+dependencies: []
+#dependencies:
+
+#  - role: cjsteel.resources
+#    resources_on_local : '{{ upgrade_resources_on_local }}'
+#    resources_on_remote: '{{ upgrade_resources_on_remote }}'
+
+#  - role: acemenu
+
+galaxy_info:
+  author: 'Christopher Steel'
+  description: 'upgrade is used to...'
+  company: 'McGill Centre for Integrative Neuroscience'
+  license: MIT
+  min_ansible_version: '1.7.1'
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+
+  galaxy_tags:
+    - mcin
+    - upgrade
+    - package
+    # NOTE: A tag is limited to a single word comprised of
+    # alphanumeric characters. Maximum 20 tags per role.

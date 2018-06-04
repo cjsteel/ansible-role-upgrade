@@ -1,0 +1,22 @@
+--- # roles/upgrade/tests/vagrant.yml
+
+- hosts: all
+  become: true
+  gather_facts: false
+  pre_tasks:
+
+    - name: "Set projects variables and ensure desired python(s) installed on nodes"
+      import_tasks: vagrant_pre_tasks.yml
+
+
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  vars:
+    - upgrade_debug : true #
+    - upgrade_all   : true # all supported operating systems
+    - upgrade_dist  : true # debian systems only
+    - upgrade_clean : true # clean the cache on all os that support this
+
+  roles:
+    - ../../

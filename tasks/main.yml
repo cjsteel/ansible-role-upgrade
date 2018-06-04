@@ -1,0 +1,86 @@
+--- # roles/upgrade/tasks/main.yml
+
+- name: "Debug variable values"
+  include: "{{ fact_role_path }}/tasks/debug.yml"
+  when: upgrade_debug
+
+# CentOS and Redhat
+
+## CentOS and Redhat upgrade
+
+- name: "Centos | Upgrade all CentOS system to latest package versions"
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS' and
+        upgrade_all is defined and upgrade_all == true
+
+## CentOS and Redhat clean cache
+
+# see upgrade/ docs/centos-ansible-failure.md for error details
+#- name: "CentOS | Clean cache"
+#  command: yum clean cache
+#  when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS' and
+#        upgrade_clean is defined and upgrade_clean == true
+
+# Debian
+
+## Debian update
+
+- name: "Debian | Upgrade Debian based systems to the latest package versions"
+  apt:
+    upgrade: safe
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and
+        upgrade_all is defined and upgrade_all == true
+
+## Debian dist upgrade
+
+- name: "Debian | dist upgrade Debian based systems to the vary latest package versions"
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and
+        upgrade_dist is defined and upgrade_dist == true
+
+## Debian autoremove
+
+### Check if usefull
+
+- name: "Debian | Check if packages need to be autoremoved"
+  command: apt-get --dry-run autoremove
+  register: debian_autoremove
+  changed_when: False
+  ignore_errors: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+### Autoremove if useful
+
+- name: "Debian | Autoremove unused packages"
+  command: apt-get -y autoremove
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and
+        upgrade_clean is defined and upgrade_clean == true and
+        debian_autoremove.stdout is defined and debian_autoremove.stdout.find("packages will be REMOVED") != -1
+
+#- name: Debian | Check if a reboot is required
+#  register: file
+#  stat: path=/var/run/reboot-required get_md5=no
+
+# Fedora
+
+## Fedora Update 
+
+- name: "Fedora | Upgrade all Fedora systems to the latest package versions"
+  dnf:
+    name: '*'
+    state: latest
+  when: ansible_distribution == 'Fedora' and
+        upgrade_all is defined and upgrade_all == true
+
+## Fedora clean
+- name: "Clean (Fedora) dnf package cache"
+  command: /usr/bin/dnf clean all
+  when: ansible_distribution == 'Fedora' and
+        upgrade_clean is defined and upgrade_clean == true

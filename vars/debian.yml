@@ -1,0 +1,4 @@
+--- # roles/upgrade/vars/debian.yml
+
+# Debian specific vars
+upgrade_package_extension: 'deb'

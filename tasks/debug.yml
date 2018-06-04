@@ -1,0 +1,35 @@
+--- # roles/upgrade/tasks/debug.yml
+
+
+- debug: var=upgrade_controller_user
+- debug: var=upgrade_controller_home
+- debug: var=upgrade_controller_resources_home
+
+- debug: var=upgrade_deployment_user
+- debug: var=upgrade_deployment_home
+- debug: var=upgrade_deployment_resources_home
+
+#- debug: var=upgrade_major
+#- debug: var=upgrade_moderate_revision
+#- debug: var=upgrade_minor_revision
+#- debug: var=upgrade_build
+
+## Package #
+
+- debug: var=upgrade_package_state
+- debug: var=upgrade_package_version
+- debug: var=upgrade_package_filename
+
+# Resources
+
+- debug: var=upgrade_package_url
+- debug: var=upgrade_checksum_url
+- debug: var=upgrade_checksum_sig_url
+
+- debug: var=upgrade_controller_resources_dir
+- debug: var=upgrade_deployment_resources_dir
+
+# Directories
+
+- debug: var=upgrade_ensure_dirs_on_remote
+- debug: var=upgrade_ensure_dirs_on_local

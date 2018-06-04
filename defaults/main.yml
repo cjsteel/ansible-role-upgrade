@@ -1,0 +1,9 @@
+---
+# roles/upgrade/defaults/main.yml
+
+upgrade_debug : false #
+upgrade_all   : false # all supported operating systems
+upgrade_dist  : false # debian systems only
+upgrade_clean : false # clean the cache on all os that support this
+
+
