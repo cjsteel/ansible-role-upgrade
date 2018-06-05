@@ -1,6 +1,8 @@
 ---
 # roles/upgrade/defaults/main.yml
 
+upgrade_identifier: "Round 0"
+
 upgrade_debug : false #
 upgrade_all   : false # all supported operating systems
 upgrade_dist  : false # debian systems only

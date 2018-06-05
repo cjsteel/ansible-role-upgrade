@@ -1,6 +1,6 @@
 --- # roles/upgrade/tasks/main.yml
 
-- name: "Debug variable values"
+- name: "Upgrade role - {{ upgrade_identifier }} - debug variable values"
   include: "{{ fact_role_path }}/tasks/debug.yml"
   when: upgrade_debug
 
@@ -8,7 +8,7 @@
 
 ## CentOS and Redhat upgrade
 
-- name: "Centos | Upgrade all CentOS system to latest package versions"
+- name: " - {{ upgrade_identifier }} - Centos | Upgrade all CentOS system to latest package versions"
   yum:
     name: '*'
     state: latest
@@ -27,7 +27,7 @@
 
 ## Debian update
 
-- name: "Debian | Upgrade Debian based systems to the latest package versions"
+- name: " - {{ upgrade_identifier }} - Debian | Upgrade Debian based systems to the latest package versions"
   apt:
     upgrade: safe
     update_cache: yes
@@ -37,7 +37,7 @@
 
 ## Debian dist upgrade
 
-- name: "Debian | dist upgrade Debian based systems to the vary latest package versions"
+- name: " - {{ upgrade_identifier }} - Debian | dist upgrade Debian based systems to the vary latest package versions"
   apt:
     upgrade: dist
     update_cache: yes
@@ -49,7 +49,7 @@
 
 ### Check if usefull
 
-- name: "Debian | Check if packages need to be autoremoved"
+- name: " - {{ upgrade_identifier }} - Debian | Check if packages need to be autoremoved"
   command: apt-get --dry-run autoremove
   register: debian_autoremove
   changed_when: False
@@ -58,7 +58,7 @@
 
 ### Autoremove if useful
 
-- name: "Debian | Autoremove unused packages"
+- name: " - {{ upgrade_identifier }} - Debian | Autoremove unused packages"
   command: apt-get -y autoremove
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' and
         upgrade_clean is defined and upgrade_clean == true and
@@ -72,7 +72,7 @@
 
 ## Fedora Update 
 
-- name: "Fedora | Upgrade all Fedora systems to the latest package versions"
+- name: " - {{ upgrade_identifier }} - Fedora | Upgrade all Fedora systems to the latest package versions"
   dnf:
     name: '*'
     state: latest
@@ -80,7 +80,7 @@
         upgrade_all is defined and upgrade_all == true
 
 ## Fedora clean
-- name: "Clean (Fedora) dnf package cache"
+- name: " - {{ upgrade_identifier }} - Clean (Fedora) dnf package cache"
   command: /usr/bin/dnf clean all
   when: ansible_distribution == 'Fedora' and
         upgrade_clean is defined and upgrade_clean == true

@@ -13,6 +13,7 @@
   remote_user: ubuntu
   become: true
   vars:
+    - upgrade_identifier : "vagrant role test"
     - upgrade_debug : true #
     - upgrade_all   : true # all supported operating systems
     - upgrade_dist  : true # debian systems only
